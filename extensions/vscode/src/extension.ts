@@ -28,7 +28,8 @@ export function activate(context: ExtensionContext) {
     context.subscriptions.push(disposable);
 
     context.subscriptions.push(workspace.onDidChangeConfiguration(e => {
-		if (e.affectsConfiguration('streamblocks-cal.language server.connection type', { languageId: 'cal' })) {
+		if (e.affectsConfiguration('streamblocks-cal.language server.connection type', { languageId: 'cal' })
+        || e.affectsConfiguration('streamblocks-cal.language server.socket address', { languageId: 'cal' })) {
             client.stop();
             context.subscriptions.splice(context.subscriptions.indexOf(disposable));
 
@@ -48,8 +49,19 @@ function getServerOptions(connectionType, context: ExtensionContext): ServerOpti
     switch (connectionType) {
         case "socket":
             return () => {
+                let host = 'localhost';
+                let port = 5008;
+                let socketAddress: String = workspace.getConfiguration().get('streamblocks-cal.language server.socket address');
+                if (socketAddress != null && socketAddress.split(':').length == 2) {
+                    host = socketAddress.split(':')[0];
+                    port = parseInt(socketAddress.split(':')[1]);
+                }
+
+                console.log(host, port);
+
                 let socket = net.connect({
-                    port: 5008
+                    host: host,
+                    port: port
                 });
                 let result: StreamInfo = {
                     writer: socket,

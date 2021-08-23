@@ -64,7 +64,15 @@
                         "socket"
                     ],
                     "default": "process io",
-                    "description": "Type of connection with CAL Language Server. If socket, the external language server needs to be running before",
+                    "description": "Type of connection with CAL Language Server. If socket, the external language server needs to be started before",
+                    "scope": "window"
+                },
+                "streamblocks-cal.language server.socket address": {
+                    "type": [
+                        "string"
+                    ],
+                    "default": "localhost:5008",
+                    "description": "CAL Language Server remote address (in case of socket type of connection). If null, the extension will use the default address (localhost:5008)",
                     "scope": "window"
                 }
             }

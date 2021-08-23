@@ -101,7 +101,11 @@ The launched editor starts in `workspace/` directory and automatically boots the
 
 All configuration options for this extention can be found in the *Settings* section **Extensions / CAL (StreamBlocks)**.
 
+To specify the path to compiler binary use ***Compiler: Path*** setting. If the compiler path is set correctly, the extension will compile source code into corresponding executable. The default path value is null (which results in omitting code compilation).
+
 To specify type of the connection with the language server use ***Language Server: Connection type*** setting. The defualt type is *process io* which runs the server as backgroud process and directly communicates with the editor. Other option is *socket* which enables the editor to connect to remote server via socket.
+
+If *socket* option is chosen, ***Language Server: Socket Address*** settting can be used to customize the address of the remote language server (*localhost:5008* by default).
 
 ### Eclipse Theia
 
