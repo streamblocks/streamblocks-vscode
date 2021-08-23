@@ -21,9 +21,6 @@ shadowJar {
 	exclude('META-INF/INDEX.LIST', 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA','schema/*',
 		'.options', '.api_description', '*.profile', '*.html', 'about.*', 'about_files/*',
 		'plugin.xml', 'systembundle.properties', 'profile.list')
-	/*manifest {
-		attributes('Main-Class': 'org.eclipse.xtext.ide.server.ServerLauncher')
-  	}*/
 	baseName = 'xtext-language-server'
 	version = null
 	classifier = null
