@@ -10,8 +10,9 @@ import { workspace, ExtensionContext } from 'vscode';
 import { LanguageClient, LanguageClientOptions, ServerOptions, StreamInfo } from 'vscode-languageclient';
 
 export function activate(context: ExtensionContext) {
-    let connectionType = workspace.getConfiguration().get('streamblocks-cal.language server.connection type');
-
+    let connectionType: String = workspace.getConfiguration().get('streamblocks-cal.language server.connection type');
+    let name = 'CAL (Xtext) - ' + connectionType.charAt(0).toUpperCase() + connectionType.substr(1);
+    let serverOptions = getServerOptions(connectionType, context);
     let clientOptions: LanguageClientOptions = {
         documentSelector: ['cal'],
         synchronize: {
@@ -19,7 +20,8 @@ export function activate(context: ExtensionContext) {
         }
     };
 
-    let client = new LanguageClient('CAL Xtext Language Server', getServerOptions(connectionType, context), clientOptions);
+
+    let client = new LanguageClient(name, serverOptions, clientOptions);
     client.trace = Trace.Verbose;
 
     let disposable = client.start();
@@ -31,7 +33,9 @@ export function activate(context: ExtensionContext) {
             context.subscriptions.splice(context.subscriptions.indexOf(disposable));
 
             connectionType = workspace.getConfiguration().get('streamblocks-cal.language server.connection type');
-			client = new LanguageClient('CAL Xtext Language Server', getServerOptions(connectionType, context), clientOptions);
+            name = 'CAL (Xtext) - ' + connectionType.charAt(0).toUpperCase() + connectionType.substr(1);
+            serverOptions = getServerOptions(connectionType, context);
+			client = new LanguageClient(name, serverOptions, clientOptions);
             client.trace = Trace.Verbose;
 
             disposable = client.start();
