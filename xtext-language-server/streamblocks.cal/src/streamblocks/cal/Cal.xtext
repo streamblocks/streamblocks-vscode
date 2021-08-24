@@ -274,7 +274,7 @@ AstProcessDescription:
 	'end';
 
 AstPort:
-	(annotations+=AstAnnotation)* type=AstType name=ID;
+	(annotations+=AstAnnotation)* (type=AstType)? name=ID;
 
 AstFunction returns AstVariable:
 	{AstFunction}
@@ -282,7 +282,7 @@ AstFunction returns AstVariable:
 	'function' name=ID
 	'('
 	(parameters+=AstVariableDeclaration (',' parameters+=AstVariableDeclaration)*)?
-	')' '-->' type=AstType
+	')' ('-->' type=AstType) ?
 	('var'
 	variables+=AstValuedVariableDeclaration
 	(',' variables+=AstValuedVariableDeclaration)*)? (':'
@@ -295,7 +295,7 @@ AstExternalFunction returns AstVariable:
 	'external' 'function' name=ID
 	'('
 	(parameters+=AstVariableDeclaration (',' parameters+=AstVariableDeclaration)*)?
-	')' '-->' type=AstType 'end';
+	')' ('-->' type=AstType)? 'end';
 
 AstProcedure returns AstVariable:
 	{AstProcedure}
@@ -629,7 +629,7 @@ AstExpressionLambda:
 	'lambda' name=ID
 	'('
 	(parameters+=AstVariableDeclaration (',' parameters+=AstVariableDeclaration)*)?
-	')' '-->' type=AstType
+	')' ('-->' type=AstType)?
 	('var'
 	variables+=AstValuedVariableDeclaration
 	(',' variables+=AstValuedVariableDeclaration)*)? ':'
@@ -775,8 +775,11 @@ AstTypeParam:
 
 AstVariableDeclaration returns AstVariable:
 	(annotations+=AstAnnotation)*
-	type=AstType name=ID
-	('[' dimensions+=AstExpression ']')*;
+ 	(
+		type=AstType name=ID ('[' dimensions+=AstExpression ']')*
+		| name=ID ('[' dimensions+=AstExpression ']')* 
+	)
+	;
 
 AstValuedVariableDeclaration returns AstVariable:
 	AstVariableDeclaration ((constant?='=' | ':=') value=AstExpression)?;
