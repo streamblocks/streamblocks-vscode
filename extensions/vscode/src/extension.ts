@@ -9,6 +9,8 @@ import { Trace } from 'vscode-jsonrpc';
 import { workspace, ExtensionContext } from 'vscode';
 import { LanguageClient, LanguageClientOptions, ServerOptions, StreamInfo } from 'vscode-languageclient';
 
+import { activateCALDebug } from './activateCALDebug';
+
 export function activate(context: ExtensionContext) {
     let connectionType: String = workspace.getConfiguration().get('streamblocks-cal.language server.connection type');
     let name = 'CAL (Xtext) - ' + connectionType.charAt(0).toUpperCase() + connectionType.substr(1);
@@ -19,7 +21,6 @@ export function activate(context: ExtensionContext) {
             fileEvents: workspace.createFileSystemWatcher('**/*.*')
         }
     };
-
 
     let client = new LanguageClient(name, serverOptions, clientOptions);
     client.trace = Trace.Verbose;
@@ -36,6 +37,7 @@ export function activate(context: ExtensionContext) {
             connectionType = workspace.getConfiguration().get('streamblocks-cal.language server.connection type');
             name = 'CAL (Xtext) - ' + connectionType.charAt(0).toUpperCase() + connectionType.substr(1);
             serverOptions = getServerOptions(connectionType, context);
+
 			client = new LanguageClient(name, serverOptions, clientOptions);
             client.trace = Trace.Verbose;
 
@@ -43,6 +45,8 @@ export function activate(context: ExtensionContext) {
             context.subscriptions.push(disposable);
 		}
 	}));
+
+    activateCALDebug(context);
 }
 
 function getServerOptions(connectionType, context: ExtensionContext): ServerOptions {
