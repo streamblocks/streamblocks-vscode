@@ -9,10 +9,8 @@ import { Trace } from 'vscode-jsonrpc';
 import { workspace, ExtensionContext } from 'vscode';
 import { LanguageClient, LanguageClientOptions, ServerOptions, StreamInfo } from 'vscode-languageclient';
 
-import { activateCALDebug } from './activateCALDebug';
-
 export function activate(context: ExtensionContext) {
-    let connectionType: String = workspace.getConfiguration().get('streamblocks-cal.language server.connection type');
+    let connectionType: String = workspace.getConfiguration().get('cal.languageServer.connectionType');
     let name = 'CAL (Xtext) - ' + connectionType.charAt(0).toUpperCase() + connectionType.substr(1);
     let serverOptions = getServerOptions(connectionType, context);
     let clientOptions: LanguageClientOptions = {
@@ -29,12 +27,12 @@ export function activate(context: ExtensionContext) {
     context.subscriptions.push(disposable);
 
     context.subscriptions.push(workspace.onDidChangeConfiguration(e => {
-		if (e.affectsConfiguration('streamblocks-cal.language server.connection type', { languageId: 'cal' })
-        || e.affectsConfiguration('streamblocks-cal.language server.socket address', { languageId: 'cal' })) {
+		if (e.affectsConfiguration('cal.languageServer.connectionType', { languageId: 'cal' })
+        || e.affectsConfiguration('cal.languageServer.socketAddress', { languageId: 'cal' })) {
             client.stop();
             context.subscriptions.splice(context.subscriptions.indexOf(disposable));
 
-            connectionType = workspace.getConfiguration().get('streamblocks-cal.language server.connection type');
+            connectionType = workspace.getConfiguration().get('cal.languageServer.connectionType');
             name = 'CAL (Xtext) - ' + connectionType.charAt(0).toUpperCase() + connectionType.substr(1);
             serverOptions = getServerOptions(connectionType, context);
 
@@ -45,17 +43,15 @@ export function activate(context: ExtensionContext) {
             context.subscriptions.push(disposable);
 		}
 	}));
-
-    activateCALDebug(context);
 }
 
 function getServerOptions(connectionType, context: ExtensionContext): ServerOptions {
     switch (connectionType) {
-        case "socket":
+        case "Socket":
             return () => {
                 let host = 'localhost';
                 let port = 5008;
-                let socketAddress: String = workspace.getConfiguration().get('streamblocks-cal.language server.socket address');
+                let socketAddress: String = workspace.getConfiguration().get('cal.languageServer.socketAddress');
                 if (socketAddress != null && socketAddress.split(':').length == 2) {
                     host = socketAddress.split(':')[0];
                     port = parseInt(socketAddress.split(':')[1]);
@@ -73,7 +69,7 @@ function getServerOptions(connectionType, context: ExtensionContext): ServerOpti
                 };
                 return Promise.resolve(result);
             };
-        case "process io":
+        case "Process IO":
         default:
             return {
                 command: getJavaExecutablePath(), 

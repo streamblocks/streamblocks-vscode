@@ -1,5 +1,5 @@
 
-<img src="https://github.com/streamblocks/streamblocks-vscode/blob/xtext-language-server/doc/streamblocks-logo.png" align="right"
+<img src="https://github.com/streamblocks/streamblocks-vscode/blob/master/doc/streamblocks-logo.png" align="right"
      alt="StreamBlocks Logo" width="80">
 # CAL Actor Language LSP extensions
 
@@ -95,17 +95,23 @@ $ ./gradlew launchCode
 > ./gradlew.bat launchCode
 ```
  
-The launched editor starts in `workspace/` directory and automatically boots the language server in backgroud ready to be used. 
+The launched editor starts in `workspace/` directory and automatically boots the language server in backgroud ready to be used.
+
+There is also a pre-defined configuration ***CAL Graal DAP*** for attaching to a remote debug server via DAP (attaches to *localhost:4711* by default).
 
 #### Extension configuration
 
-All configuration options for this extention can be found in the *Settings* section **Extensions / CAL (StreamBlocks)**.
+All configuration options for this extention can be found in the *Settings* section **Extensions / CAL**.
 
 To specify the path to compiler binary use ***Compiler: Path*** setting. If the compiler path is set correctly, the extension will compile source code into corresponding executable. The default path value is null (which results in omitting code compilation).
 
-To specify type of the connection with the language server use ***Language Server: Connection type*** setting. The defualt type is *process io* which runs the server as backgroud process and directly communicates with the editor. Other option is *socket* which enables the editor to connect to remote server via socket.
+To specify type of the connection with the language server use ***Language Server: Connection type*** setting. The default type is *Process IO* which runs the server as backgroud process and directly communicates with the editor. Other option is *Socket* which enables the editor to connect to remote server via socket.
 
-If *socket* option is chosen, ***Language Server: Socket Address*** settting can be used to customize the address of the remote language server (*localhost:5008* by default).
+If *Socket* option is chosen, ***Language Server: Socket Address*** settting can be used to customize the address of the remote language server (*localhost:5008* by default).
+
+<!-- To specify type of the connection with the debug server use ***Debug Server: Connection type*** setting. The only option for now is *Socket* which enables the editor to connect to remote server via socket.
+
+#If *Socket* option is chosen, ***Debug Server: Socket Address*** settting can be used to customize the address of the remote debug server (*localhost:4711* by default). -->
 
 ### Eclipse Theia
 
